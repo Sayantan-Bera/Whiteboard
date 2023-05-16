@@ -43,30 +43,46 @@ class MainActivity : AppCompatActivity() {
         }
     }
     var customProgressDialog: Dialog? = null
-    val requestPermission: ActivityResultLauncher<Array<String>> =
+     val requestPermission: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             permissions.entries.forEach {
                 val perMissionName = it.key
                 val isGranted = it.value
+                 flag=true
                 if (isGranted ) {
                     Toast.makeText(
                         this@MainActivity,
                         "Permission granted now you can read the storage files.",
                         Toast.LENGTH_LONG
                     ).show()
-                    val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                    openGalleryLauncher.launch(pickIntent)
+//                    val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//                    openGalleryLauncher.launch(pickIntent)
                 } else {
-                    if (perMissionName == Manifest.permission.READ_EXTERNAL_STORAGE)
-                        Toast.makeText(
-                            this@MainActivity,
-                            "Oops you just denied the permission.",
-                            Toast.LENGTH_LONG
-                        ).show()
+                    flag=false
+//                    if (perMissionName == Manifest.permission.READ_EXTERNAL_STORAGE)
+//                        Toast.makeText(
+//                            this@MainActivity,
+//                            "Oops you just denied the permission.",
+//                            Toast.LENGTH_LONG
+//                        ).show()
                 }
+            }
+            if(flag==true){
+
+                val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                openGalleryLauncher.launch(pickIntent)
+            }else{
+
+                Toast.makeText(
+                    this@MainActivity,
+                    "Oops you just denied the permission.",
+                    Toast.LENGTH_LONG
+                ).show()
+
             }
 
         }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
